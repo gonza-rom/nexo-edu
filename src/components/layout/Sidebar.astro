@@ -1,0 +1,77 @@
+---
+interface NavItem {
+  id: string;
+  label: string;
+  icon: string;
+  href: string;
+}
+
+interface Props {
+  activeItem?: string;
+}
+
+const { activeItem = '' } = Astro.props;
+
+const navItems: NavItem[] = [
+  { id: 'dashboard', label: 'Dashboard',   icon: 'dashboard',    href: '/'          },
+  { id: 'imports',   label: 'Importar',    icon: 'upload_file',  href: '/imports'   },
+  { id: 'history',   label: 'Historial',   icon: 'history',      href: '/history'   },
+  { id: 'settings',  label: 'Configuración', icon: 'settings',   href: '/settings'  },
+];
+---
+
+<aside class="fixed left-0 top-0 h-screen w-sidebar-width bg-secondary shadow-md flex flex-col py-lg z-50">
+
+  <!-- Logo -->
+  <div class="px-lg mb-xl">
+    <div class="flex items-center gap-sm mb-xs">
+      <div class="w-8 h-8 bg-primary-fixed rounded-lg flex items-center justify-center">
+        <span class="material-symbols-outlined text-primary text-[18px]">hub</span>
+      </div>
+      <h1 class="font-headline-sm text-headline-sm font-bold text-white tracking-tight">NexoEDU</h1>
+    </div>
+    <p class="font-label-sm text-label-sm text-secondary-fixed-dim/70 ml-[40px]">Integración Educativa</p>
+  </div>
+
+  <!-- Nav -->
+  <nav class="flex-grow">
+    <ul class="space-y-xs">
+      {navItems.map((item) => {
+        const isActive = activeItem === item.id;
+        return (
+          <li>
+            <a
+              href={item.href}
+              class:list={[
+                'flex items-center gap-md px-md py-sm transition-colors duration-150 cursor-pointer',
+                isActive
+                  ? 'bg-secondary-container/10 border-l-4 border-primary-fixed text-primary-fixed'
+                  : 'text-secondary-fixed-dim/70 hover:text-secondary-fixed hover:bg-secondary-fixed-dim/10',
+              ]}
+            >
+              <span
+                class="material-symbols-outlined"
+                style={isActive ? "font-variation-settings: 'FILL' 1" : ''}
+              >
+                {item.icon}
+              </span>
+              <span class="font-label-md text-label-md">{item.label}</span>
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  </nav>
+
+  <!-- User -->
+  <div class="px-lg mt-auto flex items-center gap-md border-t border-secondary-fixed-dim/10 pt-lg">
+    <div class="w-10 h-10 rounded-full bg-primary-fixed-dim flex items-center justify-center text-secondary font-bold text-label-sm shrink-0">
+      JD
+    </div>
+    <div class="overflow-hidden">
+      <p class="font-label-md text-label-md text-white truncate">Juan Director</p>
+      <p class="font-label-sm text-label-sm text-secondary-fixed-dim/60 truncate">Administrador</p>
+    </div>
+  </div>
+
+</aside>

@@ -1,24 +1,36 @@
 ---
-import '../styles/global.css';
-
 interface Props {
   title: string;
   description?: string;
 }
 
-const { title, description = 'Nexo Edu' } = Astro.props;
+const { title, description = 'NexoEDU — Gestión Educativa Inteligente' } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="es" class="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>{title} — Nexo Edu</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Geist:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title} | NexoEDU</title>
   </head>
-  <body>
+  <body class="bg-background text-on-background font-body-md">
     <slot />
   </body>
 </html>
+
+<style is:global>
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+</style>

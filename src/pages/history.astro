@@ -1,0 +1,117 @@
+---
+import DashboardLayout from '../layouts/DashboardLayout.astro';
+
+const records = [
+  { date: '15 Oct, 2024', time: '10:45 AM', user: 'Juan Director', initials: 'JD', color: 'bg-primary-fixed text-primary', module: 'Alumnos Primaria',       count: 1240,  status: 'success' },
+  { date: '15 Oct, 2024', time: '08:20 AM', user: 'Marta Gómez',   initials: 'MG', color: 'bg-secondary-fixed text-secondary', module: 'Docentes Secundarios', count: 85,    status: 'warning' },
+  { date: '14 Oct, 2024', time: '16:15 PM', user: 'Automático',    initials: 'SYS', color: 'bg-surface-variant text-on-surface-variant', module: 'Backup de Seguridad', count: 15402, status: 'success' },
+  { date: '13 Oct, 2024', time: '11:00 AM', user: 'Juan Director', initials: 'JD', color: 'bg-primary-fixed text-primary', module: 'Asistencia',              count: 980,   status: 'error'   },
+  { date: '12 Oct, 2024', time: '09:30 AM', user: 'Marta Gómez',   initials: 'MG', color: 'bg-secondary-fixed text-secondary', module: 'Calificaciones',      count: 2310,  status: 'success' },
+];
+
+const statusMap = {
+  success: { label: 'Éxito',      classes: 'bg-emerald-100 text-emerald-700', dot: 'bg-emerald-500' },
+  warning: { label: 'Advertencia', classes: 'bg-amber-100 text-amber-700',    dot: 'bg-amber-500'   },
+  error:   { label: 'Error',      classes: 'bg-error-container/60 text-on-error-container', dot: 'bg-error' },
+};
+---
+
+<DashboardLayout title="Historial" activeItem="history" searchPlaceholder="Buscar en historial...">
+
+  <!-- Header -->
+  <div class="flex justify-between items-end mb-xl">
+    <div>
+      <h2 class="font-headline-lg text-headline-lg text-on-surface">Historial de Sincronizaciones</h2>
+      <p class="font-body-md text-body-md text-on-surface-variant">Trazabilidad completa de todos los procesos realizados.</p>
+    </div>
+    <button class="bg-primary text-white px-lg py-sm rounded-lg font-label-md text-label-md flex items-center gap-sm hover:shadow-md transition-all">
+      <span class="material-symbols-outlined text-[18px]">download</span>
+      Exportar historial
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <div class="flex gap-sm mb-lg">
+    {['Hoy', 'Últimos 7 días', 'Últimos 30 días', 'Todo'].map((f, i) => (
+      <button class:list={[
+        'px-md py-sm rounded-lg font-label-md text-label-md transition-colors',
+        i === 1
+          ? 'bg-primary text-white shadow-sm'
+          : 'bg-surface-container-lowest border border-outline-variant text-on-surface-variant hover:bg-surface-container-low'
+      ]}>
+        {f}
+      </button>
+    ))}
+  </div>
+
+  <!-- Table -->
+  <div class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden shadow-sm">
+    <div class="px-lg py-md border-b border-outline-variant bg-surface-container-low flex justify-between items-center">
+      <h4 class="font-label-md text-label-md font-bold text-on-surface">5 registros encontrados</h4>
+      <div class="flex items-center gap-sm">
+        <span class="font-label-sm text-label-sm text-on-surface-variant">Ordenar por:</span>
+        <select class="font-label-sm text-label-sm border border-outline-variant rounded-lg px-sm py-xs bg-white text-on-surface outline-none focus:ring-2 focus:ring-primary/20">
+          <option>Más reciente</option>
+          <option>Más antiguo</option>
+          <option>Estado</option>
+        </select>
+      </div>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left">
+        <thead class="border-b border-outline-variant bg-surface-container-lowest">
+          <tr>
+            <th class="px-lg py-md font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Fecha y Hora</th>
+            <th class="px-lg py-md font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Usuario</th>
+            <th class="px-lg py-md font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Módulo</th>
+            <th class="px-lg py-md font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Registros</th>
+            <th class="px-lg py-md font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Estado</th>
+            <th class="px-lg py-md font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Acción</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-outline-variant">
+          {records.map((r) => {
+            const s = statusMap[r.status as keyof typeof statusMap];
+            return (
+              <tr class="hover:bg-surface-container-low transition-colors">
+                <td class="px-lg py-md">
+                  <p class="font-label-md text-label-md text-on-surface">{r.date}</p>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant">{r.time}</p>
+                </td>
+                <td class="px-lg py-md">
+                  <div class="flex items-center gap-sm">
+                    <div class:list={['w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold', r.color]}>
+                      {r.initials}
+                    </div>
+                    <span class="font-label-md text-label-md text-on-surface">{r.user}</span>
+                  </div>
+                </td>
+                <td class="px-lg py-md font-body-sm text-body-sm text-on-surface-variant">{r.module}</td>
+                <td class="px-lg py-md font-label-md text-label-md text-on-surface">{r.count.toLocaleString('es-AR')}</td>
+                <td class="px-lg py-md">
+                  <span class:list={['inline-flex items-center gap-xs px-sm py-xs rounded-full font-label-sm text-label-sm font-bold', s.classes]}>
+                    <span class:list={['w-1.5 h-1.5 rounded-full inline-block', s.dot]}></span>
+                    {s.label}
+                  </span>
+                </td>
+                <td class="px-lg py-md">
+                  <button class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/10 rounded-full transition-colors" title="Ver detalle">
+                    <span class="material-symbols-outlined text-[20px]">open_in_new</span>
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+    <div class="px-lg py-md border-t border-outline-variant bg-surface-container-low flex justify-between items-center">
+      <p class="font-body-sm text-body-sm text-on-surface-variant">Mostrando 1–5 de 157 registros</p>
+      <div class="flex gap-sm">
+        <button class="px-md py-xs border border-outline-variant rounded-lg font-label-sm text-label-sm text-on-surface-variant hover:bg-white transition-colors">← Anterior</button>
+        <button class="px-md py-xs bg-primary text-white rounded-lg font-label-sm text-label-sm hover:opacity-90 transition-colors">Siguiente →</button>
+      </div>
+    </div>
+  </div>
+
+</DashboardLayout>

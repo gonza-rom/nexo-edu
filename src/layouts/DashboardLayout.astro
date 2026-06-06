@@ -1,0 +1,26 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Sidebar from '../components/layout/Sidebar.astro';
+import Topbar from '../components/layout/Topbar.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  activeItem?: string;
+  searchPlaceholder?: string;
+}
+
+const { title, description, activeItem, searchPlaceholder } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="min-h-screen">
+    <Sidebar activeItem={activeItem} />
+    <Topbar searchPlaceholder={searchPlaceholder} />
+    <main class="ml-sidebar-width mt-16 p-lg min-h-screen">
+      <div class="max-w-container-max mx-auto">
+        <slot />
+      </div>
+    </main>
+  </div>
+</BaseLayout>

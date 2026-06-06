@@ -1,9 +1,224 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
+import DashboardLayout from '../layouts/DashboardLayout.astro';
 ---
 
-<BaseLayout title="Inicio">
-  <main class="min-h-screen flex items-center justify-center">
-    <p class="text-2xl font-semibold">Nexo Edu 🚀</p>
-  </main>
-</BaseLayout>
+<DashboardLayout title="Dashboard" activeItem="dashboard">
+
+  <!-- Page Header -->
+  <div class="mb-xl">
+    <h2 class="font-headline-lg text-headline-lg text-on-surface">Dashboard Ejecutivo</h2>
+    <p class="font-body-md text-body-md text-on-surface-variant">Visión estratégica de la integración de datos institucionales.</p>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg mb-xl">
+
+    <div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5">
+      <div class="flex justify-between items-start mb-md">
+        <div class="p-sm bg-primary-fixed rounded-lg text-primary">
+          <span class="material-symbols-outlined">schedule</span>
+        </div>
+        <span class="text-emerald-600 font-label-sm flex items-center gap-xs">
+          <span class="material-symbols-outlined text-[16px]">trending_up</span> +14%
+        </span>
+      </div>
+      <p class="font-label-md text-label-md text-on-surface-variant mb-xs">Tiempo Ahorrado</p>
+      <h3 class="font-headline-md text-headline-md text-on-surface">124 horas</h3>
+    </div>
+
+    <div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5">
+      <div class="flex justify-between items-start mb-md">
+        <div class="p-sm bg-secondary-fixed rounded-lg text-secondary">
+          <span class="material-symbols-outlined">groups</span>
+        </div>
+        <span class="text-emerald-600 font-label-sm flex items-center gap-xs">
+          <span class="material-symbols-outlined text-[16px]">trending_up</span> +230
+        </span>
+      </div>
+      <p class="font-label-md text-label-md text-on-surface-variant mb-xs">Alumnos Sincronizados</p>
+      <h3 class="font-headline-md text-headline-md text-on-surface">8,542</h3>
+    </div>
+
+    <div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5">
+      <div class="flex justify-between items-start mb-md">
+        <div class="p-sm bg-emerald-100 rounded-lg text-emerald-600">
+          <span class="material-symbols-outlined">check_circle</span>
+        </div>
+        <span class="text-emerald-600 font-label-sm font-bold">Óptimo</span>
+      </div>
+      <p class="font-label-md text-label-md text-on-surface-variant mb-xs">Tasa de Éxito</p>
+      <h3 class="font-headline-md text-headline-md text-on-surface">98.2%</h3>
+    </div>
+
+    <div class="bg-surface-container-lowest p-lg rounded-xl border border-error-container shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5">
+      <div class="flex justify-between items-start mb-md">
+        <div class="p-sm bg-error-container rounded-lg text-error">
+          <span class="material-symbols-outlined">warning</span>
+        </div>
+        <span class="text-error font-label-sm font-bold">Atención</span>
+      </div>
+      <p class="font-label-md text-label-md text-on-surface-variant mb-xs">Errores Pendientes</p>
+      <h3 class="font-headline-md text-headline-md text-error">14</h3>
+    </div>
+
+  </div>
+
+  <!-- Charts Row -->
+  <div class="grid grid-cols-12 gap-lg mb-xl">
+
+    <!-- Bar Chart -->
+    <div class="col-span-12 lg:col-span-8 bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm">
+      <div class="flex justify-between items-center mb-xl">
+        <div>
+          <h4 class="font-headline-sm text-headline-sm text-on-surface">Actividad de Sincronización</h4>
+          <p class="font-body-sm text-body-sm text-on-surface-variant">Registros procesados en los últimos 7 días</p>
+        </div>
+        <div class="flex gap-md">
+          <span class="flex items-center gap-xs font-label-sm text-on-surface-variant">
+            <span class="w-2 h-2 rounded-full bg-primary inline-block"></span> Éxito
+          </span>
+          <span class="flex items-center gap-xs font-label-sm text-on-surface-variant">
+            <span class="w-2 h-2 rounded-full bg-error/40 inline-block"></span> Error
+          </span>
+        </div>
+      </div>
+      <div class="h-56 flex items-end justify-between gap-md px-md mb-md">
+        {[
+          { day: 'Lun', success: 65, error: 5 },
+          { day: 'Mar', success: 85, error: 3 },
+          { day: 'Mié', success: 75, error: 8 },
+          { day: 'Jue', success: 95, error: 2 },
+          { day: 'Vie', success: 80, error: 4 },
+          { day: 'Sáb', success: 40, error: 12 },
+          { day: 'Dom', success: 30, error: 15 },
+        ].map((d) => (
+          <div class="flex-1 flex flex-col items-center gap-sm">
+            <div class="w-full flex flex-col justify-end gap-[2px] h-48 items-center">
+              <div class="w-8 bg-error/30 rounded-t-sm transition-all" style={`height: ${d.error}%`}></div>
+              <div class="w-8 bg-primary rounded-t-sm transition-all" style={`height: ${d.success}%`}></div>
+            </div>
+            <span class="font-label-sm text-label-sm text-on-surface-variant">{d.day}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Donut Chart -->
+    <div class="col-span-12 lg:col-span-4 bg-surface-container-lowest p-lg rounded-xl border border-outline-variant shadow-sm">
+      <h4 class="font-headline-sm text-headline-sm text-on-surface mb-xs">Estado General</h4>
+      <p class="font-body-sm text-body-sm text-on-surface-variant mb-xl">Distribución de sincronizaciones.</p>
+      <div class="flex justify-center mb-xl">
+        <div class="w-40 h-40 rounded-full border-[14px] border-primary flex items-center justify-center relative">
+          <div class="text-center">
+            <p class="font-headline-lg text-headline-lg font-bold text-on-surface">92%</p>
+            <p class="font-label-sm text-label-sm text-on-surface-variant">Completado</p>
+          </div>
+        </div>
+      </div>
+      <div class="space-y-md">
+        <div class="flex justify-between items-center">
+          <span class="flex items-center gap-sm font-label-md text-label-md text-on-surface">
+            <span class="w-3 h-3 rounded-full bg-primary inline-block"></span> Completado
+          </span>
+          <span class="font-label-md text-label-md text-on-surface font-bold">142</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="flex items-center gap-sm font-label-md text-label-md text-on-surface">
+            <span class="w-3 h-3 rounded-full bg-secondary-container inline-block"></span> Pendiente
+          </span>
+          <span class="font-label-md text-label-md text-on-surface font-bold">12</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="flex items-center gap-sm font-label-md text-label-md text-on-surface">
+            <span class="w-3 h-3 rounded-full bg-error inline-block"></span> Fallido
+          </span>
+          <span class="font-label-md text-label-md text-on-surface font-bold">3</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Recent History Table -->
+  <div class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden shadow-sm">
+    <div class="px-lg py-md border-b border-outline-variant bg-surface-container-low flex justify-between items-center">
+      <h4 class="font-label-md text-label-md font-bold text-on-surface">Sincronizaciones Recientes</h4>
+      <a href="/history" class="text-primary font-label-sm text-label-sm hover:underline flex items-center gap-xs">
+        Ver todas <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+      </a>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left">
+        <thead class="bg-surface-container-lowest border-b border-outline-variant">
+          <tr>
+            <th class="px-lg py-md font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Fecha y Hora</th>
+            <th class="px-lg py-md font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Usuario</th>
+            <th class="px-lg py-md font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Módulo</th>
+            <th class="px-lg py-md font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Registros</th>
+            <th class="px-lg py-md font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Estado</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-outline-variant">
+          <tr class="hover:bg-surface-container-low transition-colors">
+            <td class="px-lg py-md">
+              <p class="font-label-md text-label-md text-on-surface">15 Oct, 2024</p>
+              <p class="font-body-sm text-body-sm text-on-surface-variant">10:45 AM</p>
+            </td>
+            <td class="px-lg py-md">
+              <div class="flex items-center gap-sm">
+                <div class="w-7 h-7 rounded-full bg-primary-fixed flex items-center justify-center text-primary text-[10px] font-bold">JD</div>
+                <span class="font-label-md text-label-md text-on-surface">Juan Director</span>
+              </div>
+            </td>
+            <td class="px-lg py-md font-body-sm text-body-sm text-on-surface-variant">Alumnos Primaria</td>
+            <td class="px-lg py-md font-label-md text-label-md text-on-surface">1,240</td>
+            <td class="px-lg py-md">
+              <span class="inline-flex items-center gap-xs bg-emerald-100 text-emerald-700 px-sm py-xs rounded-full font-label-sm text-label-sm font-bold">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span> Éxito
+              </span>
+            </td>
+          </tr>
+          <tr class="hover:bg-surface-container-low transition-colors">
+            <td class="px-lg py-md">
+              <p class="font-label-md text-label-md text-on-surface">15 Oct, 2024</p>
+              <p class="font-body-sm text-body-sm text-on-surface-variant">08:20 AM</p>
+            </td>
+            <td class="px-lg py-md">
+              <div class="flex items-center gap-sm">
+                <div class="w-7 h-7 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary text-[10px] font-bold">MG</div>
+                <span class="font-label-md text-label-md text-on-surface">Marta Gómez</span>
+              </div>
+            </td>
+            <td class="px-lg py-md font-body-sm text-body-sm text-on-surface-variant">Docentes Secundarios</td>
+            <td class="px-lg py-md font-label-md text-label-md text-on-surface">85</td>
+            <td class="px-lg py-md">
+              <span class="inline-flex items-center gap-xs bg-amber-100 text-amber-700 px-sm py-xs rounded-full font-label-sm text-label-sm font-bold">
+                <span class="w-1.5 h-1.5 rounded-full bg-amber-500 inline-block"></span> Advertencia
+              </span>
+            </td>
+          </tr>
+          <tr class="hover:bg-surface-container-low transition-colors">
+            <td class="px-lg py-md">
+              <p class="font-label-md text-label-md text-on-surface">14 Oct, 2024</p>
+              <p class="font-body-sm text-body-sm text-on-surface-variant">16:15 PM</p>
+            </td>
+            <td class="px-lg py-md">
+              <div class="flex items-center gap-sm">
+                <div class="w-7 h-7 rounded-full bg-surface-variant flex items-center justify-center text-on-surface-variant text-[10px] font-bold">SYS</div>
+                <span class="font-label-md text-label-md text-on-surface">Automático</span>
+              </div>
+            </td>
+            <td class="px-lg py-md font-body-sm text-body-sm text-on-surface-variant">Backup de Seguridad</td>
+            <td class="px-lg py-md font-label-md text-label-md text-on-surface">15,402</td>
+            <td class="px-lg py-md">
+              <span class="inline-flex items-center gap-xs bg-emerald-100 text-emerald-700 px-sm py-xs rounded-full font-label-sm text-label-sm font-bold">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span> Éxito
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</DashboardLayout>

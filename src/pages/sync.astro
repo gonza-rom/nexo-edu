@@ -1,0 +1,362 @@
+---
+import DashboardLayout from '../layouts/DashboardLayout.astro';
+
+const steps = [
+  { num: 1, label: 'Validando',     done: true,  active: false },
+  { num: 2, label: 'Transformando', done: true,  active: false },
+  { num: 3, label: 'Enviando',      done: false, active: true  },
+  { num: 4, label: 'Finalizado',    done: false, active: false },
+];
+---
+
+<DashboardLayout title="Sincronización" activeItem="imports" searchPlaceholder="Buscar sincronizaciones...">
+
+  <!-- Breadcrumb -->
+  <nav class="flex items-center gap-xs text-on-surface-variant font-label-sm text-label-sm mb-xl">
+    <a href="/imports" class="hover:text-primary transition-colors">Importar</a>
+    <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+    <span class="text-primary font-bold">Sincronización con SInIDE</span>
+  </nav>
+
+  <div class="space-y-lg">
+
+    <!-- Main Engine Card -->
+    <section class="bg-white/80 backdrop-blur-sm border border-outline-variant rounded-xl p-2xl shadow-sm relative overflow-hidden">
+
+      <!-- Top progress bar -->
+      <div class="absolute top-0 left-0 w-full h-1 bg-surface-container-highest">
+        <div class="h-full bg-primary relative overflow-hidden transition-all duration-700 ease-out" id="top-bar" style="width: 75%">
+          <div class="shimmer absolute inset-0" id="top-shimmer"></div>
+        </div>
+      </div>
+
+      <div class="mt-sm space-y-xl">
+
+        <!-- Stepper -->
+        <div class="flex justify-between items-start relative" id="stepper">
+          <div class="absolute top-5 left-8 right-8 h-0.5 bg-outline-variant -z-10"></div>
+          <div class="absolute top-5 left-8 h-0.5 bg-primary-container -z-10 transition-all duration-700" id="stepper-progress" style="width: 50%"></div>
+
+          {steps.map((step) => (
+            <div class="flex flex-col items-center gap-sm flex-1" data-step={step.num}>
+              {step.done ? (
+                <div class="w-10 h-10 rounded-full bg-primary-container text-white flex items-center justify-center shadow-md step-done">
+                  <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">check_circle</span>
+                </div>
+              ) : step.active ? (
+                <div class="w-10 h-10 rounded-full bg-primary-container text-white flex items-center justify-center shadow-lg ring-4 ring-primary-fixed step-active" id="step-3-dot">
+                  <span class="material-symbols-outlined spin-icon" id="step-3-icon">sync</span>
+                </div>
+              ) : (
+                <div class="w-10 h-10 rounded-full bg-surface-container-highest text-outline flex items-center justify-center step-pending" id="step-4-dot">
+                  <span class="material-symbols-outlined" id="step-4-icon">pending</span>
+                </div>
+              )}
+              <span
+                class:list={[
+                  'font-label-md text-label-md text-center transition-colors duration-300',
+                  step.active ? 'text-primary font-bold' : step.done ? 'text-on-surface font-semibold' : 'text-on-surface-variant',
+                ]}
+                id={`step-${step.num}-label`}
+              >
+                {step.num}. {step.label}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <!-- Progress Details -->
+        <div class="grid grid-cols-12 gap-lg">
+          <div class="col-span-12 lg:col-span-8 space-y-md">
+            <div class="flex justify-between items-end">
+              <div>
+                <h2 class="font-headline-md text-headline-md text-on-surface" id="progress-title">Procesando Sincronización</h2>
+                <p class="font-body-md text-body-md text-on-surface-variant" id="progress-subtitle">Enviando paquetes de datos al servidor central de SInIDE...</p>
+              </div>
+              <span class="font-display-lg text-display-lg text-primary tracking-tighter" id="progress-pct">75%</span>
+            </div>
+            <div class="w-full h-4 bg-surface-container-highest rounded-full overflow-hidden">
+              <div class="h-full bg-primary transition-all duration-700 ease-out" style="width: 75%" id="progress-bar"></div>
+            </div>
+            <div class="bg-surface-container-lowest p-md rounded-lg border border-outline-variant flex items-center gap-md" id="lote-card">
+              <div class="p-sm bg-primary-fixed rounded-full text-primary">
+                <span class="material-symbols-outlined" id="lote-icon">cloud_upload</span>
+              </div>
+              <div class="flex-1">
+                <p class="font-label-md text-label-md text-on-surface" id="lote-title">Subiendo Lote #14: Registros de Estudiantes</p>
+                <p class="font-body-sm text-body-sm text-on-surface-variant" id="lote-subtitle">Tiempo restante estimado: <span id="countdown">45</span> segundos</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ROI Card -->
+          <div class="col-span-12 lg:col-span-4">
+            <div class="bg-primary-container text-white rounded-xl p-lg h-full flex flex-col justify-between shadow-lg relative overflow-hidden">
+              <div class="relative z-10">
+                <span class="font-label-sm text-label-sm text-primary-fixed uppercase tracking-widest font-bold">ROI Operativo</span>
+                <h3 class="font-headline-md text-headline-md mt-xs">Ahorro Estimado</h3>
+              </div>
+              <div class="mt-xl relative z-10">
+                <div class="flex items-baseline gap-xs">
+                  <span class="font-display-lg text-display-lg">18</span>
+                  <span class="font-headline-md text-headline-md">Horas</span>
+                </div>
+                <p class="text-primary-fixed text-body-sm mt-sm">Equivalente a 2.5 jornadas laborales automatizadas hoy.</p>
+              </div>
+              <div class="absolute -bottom-4 -right-4 opacity-10 pointer-events-none">
+                <span class="material-symbols-outlined text-[160px]">timer</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Results Grid -->
+    <div class="grid grid-cols-12 gap-lg">
+
+      <!-- Results Summary -->
+      <div class="col-span-12 lg:col-span-8 bg-surface rounded-xl border border-outline-variant p-lg space-y-lg shadow-sm">
+        <div class="flex justify-between items-center border-b border-outline-variant pb-md">
+          <div class="flex items-center gap-sm">
+            <span class="material-symbols-outlined text-primary">analytics</span>
+            <h3 class="font-headline-sm text-headline-sm text-on-surface">Resultado Final</h3>
+          </div>
+          <span class="font-label-sm text-label-sm bg-surface-container-high px-md py-xs rounded-full text-on-surface-variant">
+            Generado: Hoy, 14:20
+          </span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+          <div class="p-md bg-surface-container-low rounded-lg border border-outline-variant text-center">
+            <p class="font-label-sm text-label-sm text-on-surface-variant mb-xs">Registros procesados</p>
+            <p class="font-headline-md text-headline-md text-on-surface">1,520</p>
+          </div>
+          <div class="p-md bg-emerald-50 rounded-lg border border-emerald-200 text-center">
+            <p class="font-label-sm text-label-sm text-emerald-800 mb-xs">Registros enviados</p>
+            <div class="flex items-center justify-center gap-xs text-emerald-700">
+              <span class="material-symbols-outlined">check_circle</span>
+              <p class="font-headline-md text-headline-md">1,485</p>
+            </div>
+          </div>
+          <div class="p-md bg-error-container/20 rounded-lg border border-error-container text-center">
+            <p class="font-label-sm text-label-sm text-on-error-container mb-xs">Errores / Advertencias</p>
+            <div class="flex items-center justify-center gap-xs text-on-error-container">
+              <span class="material-symbols-outlined">warning</span>
+              <p class="font-headline-md text-headline-md">35</p>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-col md:flex-row gap-md pt-md">
+          <button class="flex-1 bg-primary text-white font-label-md text-label-md px-lg py-md rounded-lg hover:shadow-lg transition-all flex items-center justify-center gap-md">
+            <span class="material-symbols-outlined">description</span>
+            Descargar Reporte PDF
+          </button>
+          <a href="/history" class="flex-1 bg-surface border border-outline-variant text-on-surface font-label-md text-label-md px-lg py-md rounded-lg hover:bg-surface-container transition-all flex items-center justify-center gap-md">
+            <span class="material-symbols-outlined">manage_search</span>
+            Ver Historial Completo
+          </a>
+        </div>
+      </div>
+
+      <!-- Recent Records + info -->
+      <div class="col-span-12 lg:col-span-4 space-y-md">
+        <div class="bg-surface rounded-xl border border-outline-variant overflow-hidden shadow-sm">
+          <div class="p-md bg-surface-container border-b border-outline-variant">
+            <h4 class="font-label-md text-label-md text-on-surface font-bold uppercase tracking-wider">Últimos Registros</h4>
+          </div>
+          <div class="divide-y divide-outline-variant" id="records-list">
+            {[
+              { id: 'STU-8821', msg: 'Sincronizado correctamente', ok: true  },
+              { id: 'STU-8822', msg: 'Sincronizado correctamente', ok: true  },
+              { id: 'STU-8823', msg: 'Error: Email duplicado',     ok: false },
+            ].map((r) => (
+              <div class:list={[
+                'p-md flex items-center justify-between hover:bg-surface-container-low transition-colors cursor-pointer',
+                !r.ok && 'bg-error-container/5'
+              ]}>
+                <div class="flex items-center gap-md">
+                  <div class:list={[
+                    'w-8 h-8 rounded flex items-center justify-center',
+                    r.ok ? 'bg-primary-fixed text-primary' : 'bg-error-container text-on-error-container'
+                  ]}>
+                    <span class="material-symbols-outlined text-sm">person</span>
+                  </div>
+                  <div>
+                    <p class="font-label-sm text-label-sm text-on-surface">ID: {r.id}</p>
+                    <p class:list={['text-[10px]', r.ok ? 'text-on-surface-variant' : 'text-on-error-container']}>{r.msg}</p>
+                  </div>
+                </div>
+                <span class:list={[
+                  'material-symbols-outlined text-sm',
+                  r.ok ? 'text-emerald-600' : 'text-error'
+                ]}>{r.ok ? 'check' : 'error'}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Security badge -->
+        <div class="rounded-xl bg-secondary p-lg flex items-center gap-md shadow-md">
+          <div class="w-10 h-10 bg-primary-fixed rounded-full flex items-center justify-center text-primary shrink-0">
+            <span class="material-symbols-outlined">security</span>
+          </div>
+          <div>
+            <p class="font-label-md text-label-md text-white font-bold">Conexión Encriptada</p>
+            <p class="font-body-sm text-body-sm text-secondary-fixed-dim/70">TLS 1.3 · Datos protegidos en tránsito</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast de completado -->
+  <div
+    id="toast"
+    class="fixed bottom-lg right-lg bg-inverse-surface text-white px-lg py-md rounded-lg shadow-2xl flex items-center gap-md translate-y-20 transition-transform duration-300 z-50"
+  >
+    <span class="material-symbols-outlined text-primary-fixed">check_circle</span>
+    <p class="font-label-md text-label-md">Sincronización completada. Redirigiendo...</p>
+  </div>
+
+</DashboardLayout>
+
+<style>
+  .spin-icon { animation: spin 1.5s linear infinite; }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  .shimmer {
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    animation: shimmer 1.5s infinite;
+  }
+  @keyframes shimmer {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(100%);  }
+  }
+
+  /* Estado "done" para el step 3 al completarse */
+  .step-done-transition {
+    background-color: var(--color-primary-container, #6750A4) !important;
+    animation: none !important;
+  }
+</style>
+
+<script>
+  // ── Countdown del lote ──────────────────────────────────────────────────────
+  const countdownEl = document.getElementById('countdown');
+  let seconds = 45;
+
+  const countdownInterval = setInterval(() => {
+    seconds--;
+    if (countdownEl) countdownEl.textContent = String(seconds);
+    if (seconds <= 0) clearInterval(countdownInterval);
+  }, 1000);
+
+  // ── Simulación de progreso 75% → 100% ──────────────────────────────────────
+  const barEl        = document.getElementById('progress-bar') as HTMLElement | null;
+  const topBarEl     = document.getElementById('top-bar') as HTMLElement | null;
+  const pctEl        = document.getElementById('progress-pct') as HTMLElement | null;
+  const titleEl      = document.getElementById('progress-title') as HTMLElement | null;
+  const subtitleEl   = document.getElementById('progress-subtitle') as HTMLElement | null;
+  const loteSubEl    = document.getElementById('lote-subtitle') as HTMLElement | null;
+  const loteIconEl   = document.getElementById('lote-icon') as HTMLElement | null;
+  const loteTitleEl  = document.getElementById('lote-title') as HTMLElement | null;
+  const step3DotEl   = document.getElementById('step-3-dot') as HTMLElement | null;
+  const step3IconEl  = document.getElementById('step-3-icon') as HTMLElement | null;
+  const step3LabelEl = document.getElementById('step-3-label') as HTMLElement | null;
+  const step4DotEl   = document.getElementById('step-4-dot') as HTMLElement | null;
+  const step4IconEl  = document.getElementById('step-4-icon') as HTMLElement | null;
+  const step4LabelEl = document.getElementById('step-4-label') as HTMLElement | null;
+  const stepperProg  = document.getElementById('stepper-progress') as HTMLElement | null;
+  const shimmerEl    = document.getElementById('top-shimmer') as HTMLElement | null;
+  const toastEl      = document.getElementById('toast') as HTMLElement | null;
+
+  let progress = 75;
+
+  // Mensajes intermedios mientras avanza
+  const phases = [
+    { at: 80, lote: 'Subiendo Lote #15: Datos de Cursos',        sub: 'Tiempo restante estimado: 30 segundos' },
+    { at: 90, lote: 'Subiendo Lote #16: Datos de Tutores',       sub: 'Tiempo restante estimado: 15 segundos' },
+    { at: 97, lote: 'Finalizando envío y verificando integridad', sub: 'Casi listo...' },
+  ];
+
+  const progressInterval = setInterval(() => {
+    // Avanza entre 1 y 3 puntos por tick para hacerlo natural
+    progress += Math.random() * 2 + 1;
+    if (progress > 100) progress = 100;
+
+    const pct = Math.round(progress);
+
+    if (barEl)    barEl.style.width    = pct + '%';
+    if (topBarEl) topBarEl.style.width = pct + '%';
+    if (pctEl)    pctEl.textContent    = pct + '%';
+
+    // Actualiza mensajes según fases
+    for (const phase of phases) {
+      if (pct >= phase.at && loteTitleEl && loteSubEl) {
+        if (loteTitleEl.textContent !== phase.lote) {
+          loteTitleEl.textContent = phase.lote;
+          loteSubEl.textContent   = phase.sub;
+        }
+      }
+    }
+
+    if (progress >= 100) {
+      clearInterval(progressInterval);
+      clearInterval(countdownInterval);
+      onComplete();
+    }
+  }, 600);
+
+  function onComplete() {
+    // 1. Detener shimmer
+    if (shimmerEl) shimmerEl.style.animation = 'none';
+
+    // 2. Lote card → completado
+    if (loteIconEl)  loteIconEl.textContent  = 'cloud_done';
+    if (loteTitleEl) loteTitleEl.textContent  = 'Sincronización completada correctamente';
+    if (loteSubEl)   loteSubEl.textContent    = '1.485 registros enviados a SInIDE';
+
+    // 3. Título de progreso
+    if (titleEl)    titleEl.textContent    = '¡Sincronización Finalizada!';
+    if (subtitleEl) subtitleEl.textContent = 'Todos los lotes fueron procesados y enviados correctamente.';
+
+    // 4. Step 3 → done (deja de girar)
+    if (step3DotEl && step3IconEl) {
+      step3IconEl.classList.remove('spin-icon');
+      step3IconEl.style.setProperty('font-variation-settings', "'FILL' 1");
+      step3IconEl.textContent = 'check_circle';
+      step3DotEl.classList.remove('ring-4', 'ring-primary-fixed');
+    }
+    if (step3LabelEl) {
+      step3LabelEl.classList.remove('text-primary', 'font-bold');
+      step3LabelEl.classList.add('text-on-surface', 'font-semibold');
+    }
+
+    // 5. Step 4 → active
+    if (step4DotEl && step4IconEl) {
+      step4DotEl.classList.remove('bg-surface-container-highest', 'text-outline');
+      step4DotEl.classList.add('bg-primary-container', 'text-white', 'ring-4', 'ring-primary-fixed', 'shadow-lg');
+      step4IconEl.textContent = 'check_circle';
+      step4IconEl.style.setProperty('font-variation-settings', "'FILL' 1");
+    }
+    if (step4LabelEl) {
+      step4LabelEl.classList.remove('text-on-surface-variant');
+      step4LabelEl.classList.add('text-primary', 'font-bold');
+    }
+
+    // 6. Línea del stepper → 100%
+    if (stepperProg) stepperProg.style.width = 'calc(100% - 80px)';
+
+    // 7. Toast
+    if (toastEl) {
+      toastEl.style.transform = 'translateY(0)';
+    }
+
+    // 8. Redirigir a sync-result después de 2.5 s
+    setTimeout(() => {
+      window.location.href = '/sync-result';
+    }, 2500);
+  }
+</script>
