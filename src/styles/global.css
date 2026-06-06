@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Variables globales — completar con el design system de Nexo Edu */
+:root {
+  /* --color-primary: ; */
+  /* --color-secondary: ; */
+}
